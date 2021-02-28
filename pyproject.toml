@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "up-api"
+version = "0.1.0"
+description = ""
+authors = ["Nathanael Gordon <nathanael@ionata.com.au>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+ipdb = "^0.13.4"
+isort = "^5.7.0"
+mypy = "^0.812"
+pre-commit = "^2.10.1"
+ptipython = "^1.0.1"
+pydocstyle = "^5.1.1"
+pylint = "^2.7.1"
+
+[tool.isort]
+# this configuration makes isort and black compatible
+# https://black.readthedocs.io/en/stable/the_black_code_style.html#how-black-wraps-lines
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+
+[tool.pylint.master]
+load-plugins = "pylint_django"
+
+[tool.pylint."messages control"]
+disable = "bad-continuation,too-many-ancestors,too-few-public-methods"
+enable = "useless-suppression"
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
