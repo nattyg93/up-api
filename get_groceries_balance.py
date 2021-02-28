@@ -3,14 +3,15 @@
 from datetime import date, datetime, time
 from decimal import Decimal
 
-from dateutil import relativedelta
+from dateutil import relativedelta, tz
 
 from api import Account, up_auth
 
 MONDAY = 1
 SUNDAY = 0
-MIDNIGHT = time.min
-SIX_AM = time(6)
+TIMEZONE = tz.gettz("Australia/Hobart")
+MIDNIGHT = time.min.replace(tzinfo=TIMEZONE)
+SIX_AM = time(6, tzinfo=TIMEZONE)
 
 user_config = {
     "nat": {
@@ -80,7 +81,7 @@ def get_week_modifier(user, date_time):
 def calculate_subtraction(user, date_time=None):
     """Determine how much to subtract from the user's account."""
     if date_time is None:
-        date_time = datetime.now()
+        date_time = datetime.now(tz=TIMEZONE)
     day_of_week_deposited, time_deposited = get_config(user, "DEPOSITED")
     sunday_midnight = get_weekday(date_time, SUNDAY, MIDNIGHT)
     deposit_datetime = get_weekday(date_time, day_of_week_deposited, time_deposited)
@@ -96,8 +97,8 @@ def main():
     balance = 0
     for user in users:
         balance += get_balance(user) - calculate_subtraction(user)
-    return f"Balance remaining: {balance}"
+    return f"Balance remaining: ${balance}"
 
 
 if __name__ == "__main__":
-    main()
+    print(main())
